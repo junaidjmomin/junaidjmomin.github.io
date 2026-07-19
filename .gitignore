@@ -1,0 +1,8 @@
+node_modules/
+dist/
+*.local
+
+# Local context supplied for this editing session
+AGENTS.md
+CODEX_CONTEXT.md
+Junaid_Codex_Context.zip
