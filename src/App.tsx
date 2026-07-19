@@ -189,7 +189,7 @@ const projects: Project[] = [
   },
 ]
 
-const filters: Array<ProjectArea | 'All'> = ['All', 'Vision', 'Hardware', 'Product', 'Web3']
+const filters: Array<ProjectArea | 'All'> = ['All', 'Vision', 'Product', 'Web3']
 
 const problemPrompts: ProblemPrompt[] = [
   {
