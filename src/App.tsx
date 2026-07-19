@@ -2,7 +2,7 @@ import { type KeyboardEvent as ReactKeyboardEvent, type ReactNode, useEffect, us
 
 type Signal = 'Face' | 'Heartbeat' | 'Document' | 'Transaction' | 'Satellite image' | 'Deadline' | 'Vehicle'
 type ProjectArea = 'Vision' | 'Hardware' | 'Product' | 'Web3'
-type ProjectKey = 'nhai' | 'infi' | 'stresswatch' | 'pravaha' | 'biowallet' | 'satellite' | 'classroom' | 'parkwise'
+type ProjectKey = 'nhai' | 'pravaha' | 'biowallet' | 'satellite' | 'classroom' | 'parkwise'
 type CaseTab = 'play' | 'understand' | 'inspect'
 
 type Scenario = {
@@ -66,57 +66,8 @@ const projects: Project[] = [
     ],
   },
   {
-    key: 'infi',
-    number: '02',
-    signal: 'Face',
-    constraint: 'Movement',
-    area: 'Hardware',
-    title: 'INFI',
-    summary: 'A robot prototype that recognises a person, follows them, talks back, and knows how to stop.',
-    status: 'Working prototype',
-    problem: 'Following a person sounds simple until the scene changes, the target moves, and the machine has wheels.',
-    approach: 'INFI joins face recognition, YOLO tracking, voice interaction, and serial motor commands. The stop command is part of that loop.',
-    outcome: 'It is a private integrated prototype where perception, speech, and physical movement have to agree with each other.',
-    contribution: 'This page is about the glue between recognition, tracking, speech, and movement.',
-    teamNote: 'Private collaborative prototype. No private code, personal face data, or unverified role split is shown here.',
-    stack: ['OpenCV', 'LBPH recognition', 'YOLO tracking', 'pyttsx3', 'UART / serial control'],
-    limitations: 'It is not a production robot, and it has not earned broad multi-person tracking or safety claims.',
-    nextStep: 'Run repeatable tracking and movement tests before claiming anything stronger about reliability.',
-    sourceLabel: 'Private collaborative repository',
-    scenarios: [
-      { title: 'Recognise the intended person', description: 'The interaction starts with an identity signal rather than treating every detection as interchangeable.' },
-      { title: 'Keep a visual lock', description: 'Person detection and tracking provide the spatial signal used to guide movement.' },
-      { title: 'Issue a stop command', description: 'Motor commands travel through a serial controller, including an explicit command to stop the system.' },
-    ],
-  },
-  {
-    key: 'stresswatch',
-    number: '03',
-    signal: 'Heartbeat',
-    constraint: 'Real time',
-    area: 'Hardware',
-    title: 'StressWatch',
-    summary: 'A wearable prototype that streams pulse data to a live dashboard. It is not trying to be a medical device.',
-    status: 'Working prototype',
-    problem: 'A number without the sensor and setting behind it is not very useful.',
-    approach: 'The ESP32 and MAX30102 feed a FastAPI pipeline, which combines the readings with environmental inputs for a live dashboard.',
-    outcome: 'A working hardware-to-cloud prototype for watching a changing signal, not diagnosing someone.',
-    contribution: 'This page follows the hand-off from sensor to API to dashboard, without pretending the output is medical advice.',
-    teamNote: 'Collaborative prototype. Contribution-specific credit should be checked with the team before it is published.',
-    stack: ['ESP32', 'MAX30102', 'FastAPI', 'scikit-learn', 'Supabase realtime'],
-    limitations: 'StressWatch is not a medical device and has no clinical validation.',
-    nextStep: 'Document the engineering checks separately from any medical claim.',
-    sourceLabel: 'PranayS909/stresswatch',
-    sourceUrl: 'https://github.com/PranayS909/stresswatch',
-    scenarios: [
-      { title: 'Read the sensor stream', description: 'The pipeline collects BPM, SpO2, and HRV-oriented signals from the wearable hardware.' },
-      { title: 'Add relevant context', description: 'Environmental inputs can sit alongside the sensor readings instead of being hidden behind one opaque number.' },
-      { title: 'Show the prototype output', description: 'The interface surfaces a score with its supporting context, not a medical conclusion.' },
-    ],
-  },
-  {
     key: 'pravaha',
-    number: '04',
+    number: '02',
     signal: 'Document',
     constraint: 'Buyer context',
     area: 'Product',
@@ -141,7 +92,7 @@ const projects: Project[] = [
   },
   {
     key: 'biowallet',
-    number: '05',
+    number: '03',
     signal: 'Transaction',
     constraint: 'Recovery',
     area: 'Web3',
@@ -165,7 +116,7 @@ const projects: Project[] = [
   },
   {
     key: 'satellite',
-    number: '06',
+    number: '04',
     signal: 'Satellite image',
     constraint: 'Time',
     area: 'Vision',
@@ -189,7 +140,7 @@ const projects: Project[] = [
   },
   {
     key: 'classroom',
-    number: '07',
+    number: '05',
     signal: 'Deadline',
     constraint: 'Overload',
     area: 'Product',
@@ -213,7 +164,7 @@ const projects: Project[] = [
   },
   {
     key: 'parkwise',
-    number: '08',
+    number: '06',
     signal: 'Vehicle',
     constraint: 'Access',
     area: 'Product',
@@ -249,11 +200,11 @@ const problemPrompts: ProblemPrompt[] = [
     steps: ['Check the face locally', 'Save the confirmed event', 'Sync when the network is back'],
   },
   {
-    projectKey: 'infi',
-    prompt: 'The person keeps moving',
-    responseTitle: 'Treat movement as part of the interaction.',
-    response: 'A robot has to find the intended person again, keep up, and still know when to stop.',
-    steps: ['Recognise the person', 'Track their position', 'Keep a stop command close'],
+    projectKey: 'satellite',
+    prompt: 'Two satellite images disagree',
+    responseTitle: 'Compare the two scenes before deciding what changed.',
+    response: 'The model gets a before-and-after pair, then produces an area to review.',
+    steps: ['Prepare the image pair', 'Predict a change mask', 'Review the marked area'],
   },
   {
     projectKey: 'biowallet',
@@ -284,12 +235,6 @@ function ProjectVisual({ project, compact = false }: { project: Project; compact
 
   if (project.key === 'nhai') {
     return <div className={className} aria-hidden="true"><div className="visual-bar"><span>ILLUSTRATED FLOW / LOCAL</span><i>●</i></div><div className="auth-visual-body"><div className="face-window"><span /><b /></div><div className="auth-readout"><strong>Identity verified</strong><span>Local match ready</span><div><i /> Offline queue ready</div></div></div></div>
-  }
-  if (project.key === 'infi') {
-    return <div className={className} aria-hidden="true"><div className="visual-bar"><span>ILLUSTRATED FLOW / FOLLOW MODE</span><i>●</i></div><div className="infi-map"><span className="infi-person" /><span className="infi-path" /><span className="infi-bot"><b /><b /></span><small>VISUAL LOCK</small></div></div>
-  }
-  if (project.key === 'stresswatch') {
-    return <div className={className} aria-hidden="true"><div className="visual-bar"><span>ILLUSTRATED FLOW / SENSOR SIGNAL</span><i>●</i></div><div className="stress-layout"><div className="stress-score"><small>READING</small><strong>LIVE</strong><span>sensor + context</span></div><svg className="stress-line" viewBox="0 0 240 80" fill="none"><path d="M0 51h26l12-25 18 42 17-29 17 12 14-35 21 50 19-28 14 14h52" stroke="currentColor" strokeWidth="3" /></svg><div className="stress-meta"><span>SENSOR STREAM</span><span>CONTEXT READY</span></div></div></div>
   }
   if (project.key === 'pravaha') {
     return <div className={className} aria-hidden="true"><div className="visual-bar"><span>ILLUSTRATED FLOW / BUYER VIEW</span><i>●</i></div><div className="pravaha-page"><div className="pravaha-mark">P</div><div><small>DOCUMENT CONTEXT</small><strong>Make the first implementation step feel clear.</strong><span>Illustrative buyer step</span></div></div><div className="pravaha-progress"><i /><i /><i className="active" /><i /><i /></div></div>
@@ -421,17 +366,17 @@ function App() {
         <main id="content" tabIndex={-1}>
           <section className="hero content-wrap">
             <div className="hero-copy">
-              <span className="section-label">Junaid Momin / Mumbai / Computer Engineering</span>
-              <h1>I like building things that have to survive the <em>messy bit.</em></h1>
-              <p>A lost connection. A moving person. A sensor that is not always clean. A phone that goes missing. Those are the problems I keep coming back to.</p>
+              <span className="section-label">Junaid Momin / Portfolio</span>
+              <h1>Computer engineering student building <em>practical systems.</em></h1>
+              <p>I am Junaid, a B.Tech student at Fr. CRCE in Mumbai. This is a record of coursework, hackathon builds, experiments, and the parts that are still being figured out.</p>
               <div className="hero-actions"><a className="button button-primary" href="#situations">Try a situation <Arrow /></a><a className="button button-quiet" href="#work">See the work</a></div>
             </div>
-            <aside className="hero-index" aria-label="A short introduction to Junaid"><div className="portrait-frame"><img src="https://github.com/junaidjmomin.png?size=480" alt="Junaid Momin" /></div><span className="section-label">A little outside the code</span><p>Student engineer, hackathon builder, state-level sprinter. I enjoy the bit where an idea has to become real.</p><ul className="hero-notes"><li>Mumbai, India</li><li>Fr. CRCE, B.Tech Computer Engineering</li><li>AI, hardware, backend, and whatever joins them up</li></ul></aside>
+            <aside className="hero-index" aria-label="A short introduction to Junaid"><div className="portrait-frame"><img src="https://github.com/junaidjmomin.png?size=480" alt="Junaid Momin" /></div><span className="section-label">Profile</span><p>Based in Mumbai. Building across software, ML, and hardware. Also a state-level sprinter.</p><ul className="hero-notes"><li>Fr. CRCE / B.Tech Computer Engineering</li><li>Graduating 2028</li><li>junaidmominofficial@gmail.com</li></ul></aside>
           </section>
 
           <section className="problem-section" id="situations" aria-label="Choose a problem situation">
             <div className="content-wrap">
-              <SectionHeading label="A quick way to read the work" title="Pick the awkward moment."><p>These are the situations I keep designing around. Choose one and the response changes.</p></SectionHeading>
+              <SectionHeading label="Project explorer" title="Four project constraints."><p>Select a constraint to see what the project had to account for.</p></SectionHeading>
               <div className="problem-playground">
                 <div className="problem-picker" role="group" aria-label="Choose a problem situation">
                   {problemPrompts.map((prompt, index) => <button type="button" key={prompt.projectKey} className={activePrompt === prompt.projectKey ? 'active' : ''} aria-pressed={activePrompt === prompt.projectKey} onClick={() => setActivePrompt(prompt.projectKey)}><span>{String(index + 1).padStart(2, '0')}</span>{prompt.prompt}<Arrow /></button>)}
@@ -440,7 +385,7 @@ function App() {
                   <div className="response-topline"><span className="section-label">A response to: {activeProblem.prompt}</span><span>{activeProblemProject.number} / {activeProblemProject.title}</span></div>
                   <div className="response-main"><div><h3>{activeProblem.responseTitle}</h3><p>{activeProblem.response}</p></div><div className="response-mark" aria-hidden="true"><i /><i /><i /></div></div>
                   <ol className="response-steps">{activeProblem.steps.map((step, index) => <li key={step}><span>{String(index + 1).padStart(2, '0')}</span>{step}</li>)}</ol>
-                  <button type="button" className="response-link" onClick={() => setSelectedProject(activeProblemProject)}>See the build behind it <Arrow /></button>
+                  <button type="button" className="response-link" onClick={() => setSelectedProject(activeProblemProject)}>Open project <Arrow /></button>
                 </article>
               </div>
             </div>
@@ -448,7 +393,7 @@ function App() {
 
           <section className="work-section" id="work">
             <div className="content-wrap">
-              <SectionHeading label="01 / Things I have built" title="Not a list of ideas. Things I actually stayed with."><p>Some are hackathon builds, some are experiments, some are private prototypes. Each one is labelled honestly when you open it.</p></SectionHeading>
+              <SectionHeading label="01 / Selected projects" title="Projects"><p>Each case study includes the project context, current scope, and source where it is public.</p></SectionHeading>
               <div className="filter-row" aria-label="Filter projects">
                 {filters.map((item) => <button type="button" aria-pressed={filter === item} className={filter === item ? 'selected' : ''} onClick={() => setFilter(item)} key={item}>{item}</button>)}
               </div>
@@ -460,17 +405,17 @@ function App() {
 
           <section className="experience-section" id="experience">
             <div className="content-wrap">
-              <SectionHeading label="02 / The bits behind the work" title="I learn fastest when there is a deadline, a team, or a broken thing to fix."><p>That has meant student tech, a software internship, research, sport, and a lot of weekends spent trying to make a demo hold together.</p></SectionHeading>
-              <div className="experience-grid"><div className="experience-list"><article><span>2026</span><div><h3>Software Development Intern</h3><p>Specter Technology &amp; Games / Fantasy Cult</p></div></article><article><span>2025 to 2026</span><div><h3>Junior Technical Head</h3><p>Entrepreneurship Cell, Fr. CRCE</p></div></article><article><span>Research</span><div><h3>Abstract Algebra &amp; Differential Geometry</h3><p>Funded research experience under Dr. Filip Bar, Lund University</p></div></article></div><aside className="recognition"><span className="section-label">A few good days</span><ul><li>Smart India Hackathon 2025, National Winner</li><li>CryptoPulse selected for the JPMorgan Chase Technology Innovation Forum</li><li>Prakalp 2026, First Runner-Up</li><li>Hawkathon 2026, Second Runner-Up</li></ul></aside></div>
+              <SectionHeading label="02 / Experience and recognition" title="Work, research, and competitions" />
+              <div className="experience-grid"><div className="experience-list"><article><span>2026</span><div><h3>Software Development Intern</h3><p>Specter Technology &amp; Games / Fantasy Cult</p></div></article><article><span>2025 to 2026</span><div><h3>Junior Technical Head</h3><p>Entrepreneurship Cell, Fr. CRCE</p></div></article><article><span>Research</span><div><h3>Abstract Algebra &amp; Differential Geometry</h3><p>Funded research experience under Dr. Filip Bar, Lund University</p></div></article></div><aside className="recognition"><span className="section-label">Recognition</span><ul><li>Smart India Hackathon 2025, National Winner</li><li>CryptoPulse selected for the JPMorgan Chase Technology Innovation Forum</li><li>Prakalp 2026, First Runner-Up</li><li>Hawkathon, Second Runner-Up</li></ul></aside></div>
             </div>
           </section>
 
           <section className="about-section content-wrap" id="about">
-            <SectionHeading label="03 / Me, without the résumé voice" title="I am happiest when I can touch every part of the problem."><p>I like reading the source when the docs are vague, joining hardware to software, and staying with a project until I can explain what is actually happening. Sprinting taught me something similar: preparation shows when the pressure arrives.</p></SectionHeading>
-            <div className="about-grid"><div className="about-statement"><p>“If it works and I cannot explain why, it does not count as shipped.”</p><span>A rule I try to keep</span></div><div className="principles"><article><span>01</span><h3>Start where it hurts</h3><p>Offline use, recovery, and time pressure are not edge cases. They decide what the product needs to become.</p></article><article><span>02</span><h3>Make the state obvious</h3><p>Someone using the thing should understand what happened, what is next, and where it might fail.</p></article><article><span>03</span><h3>Stay close to the whole build</h3><p>Hardware, models, APIs, interfaces. I prefer knowing how the pieces meet instead of stopping at one layer.</p></article></div></div>
+            <SectionHeading label="03 / About" title="A few facts" />
+            <dl className="about-facts"><div><dt>Based</dt><dd>Mumbai, India</dd></div><div><dt>Studying</dt><dd>B.Tech Computer Engineering, Fr. CRCE</dd></div><div><dt>Graduating</dt><dd>2028</dd></div><div><dt>Outside coursework</dt><dd>State-level sprinting and student tech</dd></div></dl>
           </section>
         </main>
-        <footer className="site-footer" id="contact"><div className="content-wrap footer-inner"><div><span className="section-label">Open to internships, research, and hard technical problems</span><h2>Think I could help? Say hello.</h2></div><div className="footer-links"><a href="mailto:junaidmominofficial@gmail.com">junaidmominofficial@gmail.com <Arrow diagonal /></a><a href="https://github.com/junaidjmomin" target="_blank" rel="noreferrer">GitHub <Arrow diagonal /></a><a href="#top">Back to top <Arrow /></a></div></div></footer>
+        <footer className="site-footer" id="contact"><div className="content-wrap footer-inner"><div><span className="section-label">Contact</span><h2>Junaid Momin</h2></div><div className="footer-links"><a href="mailto:junaidmominofficial@gmail.com">junaidmominofficial@gmail.com <Arrow diagonal /></a><a href="https://github.com/junaidjmomin" target="_blank" rel="noreferrer">GitHub <Arrow diagonal /></a><a href="#top">Back to top <Arrow /></a></div></div></footer>
       </div>
       {selectedProject && <ProjectDialog key={selectedProject.key} project={selectedProject} onClose={() => setSelectedProject(null)} backgroundRef={siteContentRef} />}
     </div>
